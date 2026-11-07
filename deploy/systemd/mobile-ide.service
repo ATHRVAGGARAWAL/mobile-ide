@@ -1,0 +1,38 @@
+# mobile-ide daemon — systemd *user* unit.
+#
+# Install   cp deploy/systemd/mobile-ide.service ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now mobile-ide
+# Logs      journalctl --user -u mobile-ide -f
+# Requires  ln -sf "$PWD/apps/server/bin/mide.js" ~/.local/bin/mide   (after `pnpm build`)
+#           loginctl enable-linger $USER   — otherwise every user unit dies at logout
+#
+# Environment: the daemon (and the agents it spawns) only see the PATH below plus whatever
+# ~/.mobile-ide/env defines. If `node`, `opencode`, `claude` or `codex` live elsewhere (nvm!),
+# or your agents need ANTHROPIC_BASE_URL / OPENAI_* style variables, put them in that file:
+#     echo "PATH=$PATH" >> ~/.mobile-ide/env
+# `mide doctor` reports what would be missing on the service PATH.
+
+[Unit]
+Description=mobile-ide daemon (drives your coding agents for your phone)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/mide serve
+WorkingDirectory=%h
+Environment=PATH=%h/.local/bin:%h/bin:/usr/local/bin:/usr/bin:/bin
+Environment=MIDE_LOG=info
+EnvironmentFile=-%h/.mobile-ide/env
+Restart=always
+RestartSec=3
+# SIGTERM lets running turns finish (up to 60 s), SIGINTs the agent adapters, closes the DB.
+# Set MIDE_DRAIN=cancel in ~/.mobile-ide/env to cancel turns instead of waiting for them.
+TimeoutStopSec=90
+# The daemon explicitly drains/kills agent process groups and detaches its terminal clients.
+# tmux servers, their running shells and desktop windows must survive a daemon restart.
+# Killing the whole cgroup would destroy phone terminal tasks after the daemon exits.
+KillMode=process
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,18 @@
+# EditorConfig (https://editorconfig.org) — mirrors the style of the existing sources.
+# JS/TS specifics (quotes, trailing commas, print width) live in .prettierrc.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.md]
+# two trailing spaces are a hard line break in Markdown
+trim_trailing_whitespace = false
+
+[Makefile]
+indent_style = tab

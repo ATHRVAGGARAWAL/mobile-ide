@@ -1,0 +1,89 @@
+{
+  "expo": {
+    "name": "Mobile IDE",
+    "slug": "mobile-ide",
+    "scheme": "mobileide",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#121311",
+    "ios": {
+      "bundleIdentifier": "dev.mobileide.app",
+      "supportsTablet": true,
+      "icon": {
+        "light": "./assets/icon.png",
+        "dark": "./assets/icon-dark.png",
+        "tinted": "./assets/icon-tinted.png"
+      },
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Attach screenshots to prompts you send to your coding agent.",
+        "UIBackgroundModes": ["remote-notification"],
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "dev.mobileide.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "monochromeImage": "./assets/adaptive-icon-mono.png",
+        "backgroundColor": "#121311"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/favicon.png",
+      "name": "Mobile IDE",
+      "shortName": "Mobile IDE",
+      "themeColor": "#121311",
+      "backgroundColor": "#121311",
+      "display": "standalone"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#f5f4ef",
+          "dark": {
+            "image": "./assets/splash-icon-dark.png",
+            "backgroundColor": "#121311"
+          }
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#e9ad52"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Attach screenshots to prompts you send to your coding agent.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Scan the pairing QR code that `mide pair` prints on your computer.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
+  }
+}

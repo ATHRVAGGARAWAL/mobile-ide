@@ -1,0 +1,25 @@
+{
+  "name": "@mobile-ide/core",
+  "version": "0.1.0",
+  "description": "Shared protocol, timeline reducer and reconnecting client for mobile-ide. No React or React Native imports.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js", "default": "./dist/index.js" }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test --import tsx test/*.test.ts",
+    "dev": "tsc -p tsconfig.json --watch"
+  },
+  "dependencies": {
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}

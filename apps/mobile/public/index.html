@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="%LANG_ISO_CODE%">
+  <head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <!-- viewport-fit=cover feeds env(safe-area-inset-*) to react-native-safe-area-context; maximum-scale=1 stops iOS zooming into inputs -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, shrink-to-fit=no, interactive-widget=resizes-content"
+    />
+    <title>%WEB_TITLE%</title>
+    <meta name="application-name" content="Mobile IDE" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f4ef" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121311" />
+    <!-- PWA: installable, full-screen on iOS -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Mobile IDE" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <!-- react-native-web root reset (https://necolas.github.io/react-native-web/docs/setup/#root-element) -->
+    <style id="expo-reset">
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        background-color: #121311;
+        -webkit-text-size-adjust: 100%;
+        overscroll-behavior: none;
+      }
+      @media (prefers-color-scheme: light) {
+        html {
+          background-color: #f5f4ef;
+        }
+      }
+      body {
+        overflow: hidden;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      }
+      #root {
+        display: flex;
+        height: 100%;
+        flex: 1;
+      }
+      textarea,
+      input {
+        font-size: 16px; /* never smaller: iOS Safari zooms into fields below 16px */
+      }
+      button:focus-visible,
+      a:focus-visible,
+      [role='button']:focus-visible,
+      [role='tab']:focus-visible {
+        outline: 2px solid var(--mide-focus, #e9ad52);
+        outline-offset: 3px;
+      }
+      ::selection {
+        background: #e9ad5255;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>

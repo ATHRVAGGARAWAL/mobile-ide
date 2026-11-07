@@ -1,0 +1,25 @@
+{
+  "name": "mobile-ide",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Phone-first remote IDE for coding agents (Claude Code, Codex, OpenCode, any ACP agent): a Node daemon on your dev box + an Expo app.",
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "build": "pnpm run build:server && pnpm run build:studio && pnpm run build:web",
+    "build:server": "pnpm -r --filter ./packages/* --filter ./apps/server run build",
+    "build:studio": "pnpm --filter @mobile-ide/studio run build",
+    "build:web": "pnpm --filter @mobile-ide/app run export:web",
+    "dev": "bash scripts/dev.sh",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test",
+    "server": "pnpm --filter @mobile-ide/server run dev",
+    "app": "pnpm --filter @mobile-ide/app run start"
+  },
+  "//": [
+    "build: core + daemon, the Studio bundle (apps/studio/dist, served at /studio/), then `expo export -p web` into apps/mobile/dist — the daemon serves that folder at / (see docs/RUNBOOK.md step 2).",
+    "dev: daemon (tsx, hot restart) + `expo start --web` together with one Ctrl-C (scripts/dev.sh); the daemon still serves the last export at /."
+  ]
+}

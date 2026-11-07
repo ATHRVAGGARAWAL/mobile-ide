@@ -1,0 +1,27 @@
+# Cloudflare Tunnel for the mobile-ide daemon — systemd *user* unit.
+#
+# Install   scripts/cloudflare-tunnel.sh <hostname>     (writes ~/.cloudflared/config.yml, copies + enables this unit)
+#      or   cp deploy/systemd/cloudflared-mide.service ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now cloudflared-mide
+# Logs      journalctl --user -u cloudflared-mide -f
+# Requires  cloudflared at ~/.local/bin/cloudflared, ~/.cloudflared/config.yml (tunnel id, credentials, ingress),
+#           loginctl enable-linger $USER — otherwise every user unit dies at logout
+#
+# Outbound only: the connector dials Cloudflare's edge (QUIC 7844, falls back to HTTP/2 over 443); no inbound port opens.
+
+[Unit]
+Description=Cloudflare Tunnel for mobile-ide (https://<your-hostname> -> 127.0.0.1:4820)
+After=network-online.target mobile-ide.service
+Wants=network-online.target mobile-ide.service
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/cloudflared tunnel --no-autoupdate --config %h/.cloudflared/config.yml run
+WorkingDirectory=%h
+Restart=always
+RestartSec=5
+# cloudflared exits cleanly on SIGTERM after draining in-flight requests.
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,42 @@
+{
+  "cli": {
+    "version": ">= 16.0.0",
+    "appVersionSource": "remote",
+    "promptToConfigurePushNotifications": true
+  },
+  "build": {
+    "base": {
+      "pnpm": "11.24.0",
+      "env": {
+        "EXPO_NO_TELEMETRY": "1"
+      }
+    },
+    "development": {
+      "extends": "base",
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development",
+      "ios": {
+        "simulator": false
+      }
+    },
+    "preview": {
+      "extends": "base",
+      "distribution": "internal",
+      "channel": "preview",
+      "ios": {
+        "simulator": false
+      }
+    },
+    "production": {
+      "extends": "base",
+      "autoIncrement": true,
+      "channel": "production"
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {}
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Mobile IDE",
+  "short_name": "Mobile IDE",
+  "description": "Drive Claude Code, Codex and OpenCode from your phone: chat, approve tool calls, browse files and diffs, use a terminal.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#121311",
+  "theme_color": "#121311",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

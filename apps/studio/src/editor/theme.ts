@@ -1,0 +1,148 @@
+/**
+ * Editor look: everything comes from the page's CSS variables (styles.css) so the light/dark switch is one attribute
+ * flip. Syntax colours are deliberately restrained — mostly neutral tones with the single accent for strings/numbers.
+ */
+import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
+import { EditorView } from '@codemirror/view';
+import { tags as t } from '@lezer/highlight';
+
+export const studioTheme = EditorView.theme({
+  '&': { color: 'var(--text)', backgroundColor: 'transparent', height: '100%', fontSize: 'var(--editor-font-size)' },
+  '&.cm-focused': { outline: 'none' },
+  '.cm-scroller': { fontFamily: 'var(--mono)', lineHeight: '1.6', overflow: 'auto', paddingBottom: '40vh' },
+  '.cm-content': { caretColor: 'var(--accent)', padding: '12px 0' },
+  '.cm-line': { padding: '0 16px 0 8px' },
+  '.cm-cursor, .cm-dropCursor': { borderLeftColor: 'var(--accent)', borderLeftWidth: '2px' },
+  '&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, ::selection': {
+    backgroundColor: 'var(--selection) !important',
+  },
+  '.cm-activeLine': { backgroundColor: 'var(--line-active)' },
+  '.cm-activeLineGutter': { backgroundColor: 'transparent', color: 'var(--text)' },
+  '.cm-gutters': { backgroundColor: 'transparent', color: 'var(--text-faint)', border: 'none', paddingLeft: '8px' },
+  '.cm-lineNumbers .cm-gutterElement': { minWidth: '3.2ch', padding: '0 10px 0 4px', fontSize: '0.9em' },
+  '.cm-foldGutter .cm-gutterElement': { padding: '0 4px', color: 'var(--text-faint)' },
+  '.cm-foldPlaceholder': {
+    backgroundColor: 'var(--surface-alt)',
+    border: '1px solid var(--border)',
+    color: 'var(--text-muted)',
+    borderRadius: '4px',
+    padding: '0 6px',
+    margin: '0 4px',
+  },
+  '.cm-matchingBracket': { backgroundColor: 'var(--bracket)', outline: '1px solid var(--border-strong)', borderRadius: '2px' },
+  '.cm-searchMatch': { backgroundColor: 'var(--accent-soft)', outline: '1px solid var(--accent)' },
+  '.cm-searchMatch.cm-searchMatch-selected': { backgroundColor: 'var(--accent)', color: 'var(--on-accent)' },
+  '.cm-selectionMatch': { backgroundColor: 'var(--selection-match)' },
+  '.cm-panels': { backgroundColor: 'var(--surface)', color: 'var(--text)', borderTop: '1px solid var(--border)' },
+  '.cm-panels.cm-panels-top': { borderBottom: '1px solid var(--border)' },
+  '.cm-panel.cm-search': { fontFamily: 'var(--sans)', fontSize: '12.5px', padding: '8px 12px' },
+  '.cm-panel.cm-search input, .cm-panel.cm-search button': {
+    fontFamily: 'var(--sans)',
+    fontSize: '12px',
+    borderRadius: '6px',
+    border: '1px solid var(--border)',
+    background: 'var(--surface-alt)',
+    color: 'var(--text)',
+    padding: '3px 8px',
+  },
+  '.cm-panel.cm-search label': { color: 'var(--text-muted)', fontSize: '12px' },
+  '.cm-tooltip': {
+    backgroundColor: 'var(--surface)',
+    border: '1px solid var(--border)',
+    borderRadius: '8px',
+    boxShadow: 'var(--shadow-lg)',
+    color: 'var(--text)',
+  },
+  '.cm-tooltip-autocomplete ul li[aria-selected]': { backgroundColor: 'var(--surface-alt)', color: 'var(--text)' },
+  // ---- live changes
+  '.cm-live-added': {
+    backgroundColor: 'var(--live-added)',
+    animation: 'live-wash 2.6s ease-out forwards',
+    boxShadow: 'inset 3px 0 0 var(--accent)',
+  },
+  '.cm-live-removed': { boxShadow: 'inset 0 2px 0 var(--diff-del-text)', animation: 'live-fade 2.6s ease-out forwards' },
+  '.cm-ghost-old': {
+    textDecoration: 'line-through',
+    textDecorationColor: 'var(--diff-del-text)',
+    backgroundColor: 'var(--diff-del)',
+    color: 'var(--text-muted)',
+    borderRadius: '2px',
+  },
+  '.cm-ghost': {
+    margin: '2px 8px 6px 4px',
+    borderRadius: '8px',
+    border: '1px dashed var(--accent)',
+    background: 'var(--ghost-bg)',
+    overflow: 'hidden',
+    fontFamily: 'var(--mono)',
+    animation: 'ghost-in .25s var(--ease-out)',
+  },
+  '.cm-ghost-head': {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '5px 10px',
+    fontFamily: 'var(--sans)',
+    fontSize: '11px',
+    letterSpacing: '.04em',
+    textTransform: 'uppercase',
+    color: 'var(--accent)',
+    borderBottom: '1px dashed var(--accent-border)',
+  },
+  '.cm-ghost-head .cm-ghost-dot': {
+    width: '6px',
+    height: '6px',
+    borderRadius: '50%',
+    background: 'var(--accent)',
+    boxShadow: '0 0 0 3px var(--accent-soft)',
+    animation: 'pulse 1.4s ease-in-out infinite',
+  },
+  '.cm-ghost-head .cm-ghost-title': {
+    color: 'var(--text-muted)',
+    textTransform: 'none',
+    letterSpacing: 0,
+    fontWeight: 400,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  '.cm-ghost pre': {
+    margin: 0,
+    padding: '6px 12px',
+    whiteSpace: 'pre',
+    overflowX: 'auto',
+    color: 'var(--diff-add-text)',
+    maxHeight: '340px',
+    overflowY: 'auto',
+  },
+  '.cm-ghost pre .cm-ghost-more': { color: 'var(--text-faint)', fontStyle: 'italic' },
+});
+
+/** Mostly monochrome: structure in neutral weights, literals in the accent, comments faint. */
+export const studioHighlight = syntaxHighlighting(
+  HighlightStyle.define([
+    { tag: [t.keyword, t.modifier, t.operatorKeyword, t.controlKeyword, t.definitionKeyword, t.moduleKeyword], class: 'tok-keyword' },
+    { tag: [t.string, t.special(t.string), t.regexp, t.escape], class: 'tok-string' },
+    { tag: [t.number, t.bool, t.null, t.atom, t.literal], class: 'tok-literal' },
+    { tag: [t.comment, t.lineComment, t.blockComment, t.docComment], class: 'tok-comment' },
+    { tag: [t.function(t.variableName), t.function(t.propertyName), t.function(t.definition(t.variableName))], class: 'tok-function' },
+    { tag: [t.typeName, t.className, t.namespace, t.definition(t.typeName)], class: 'tok-type' },
+    { tag: [t.propertyName, t.attributeName, t.labelName], class: 'tok-property' },
+    { tag: [t.variableName, t.definition(t.variableName), t.name], class: 'tok-variable' },
+    { tag: [t.punctuation, t.separator, t.bracket, t.paren, t.brace, t.squareBracket, t.angleBracket], class: 'tok-punct' },
+    {
+      tag: [t.operator, t.arithmeticOperator, t.logicOperator, t.compareOperator, t.definitionOperator, t.updateOperator],
+      class: 'tok-operator',
+    },
+    { tag: [t.tagName, t.standard(t.tagName)], class: 'tok-tag' },
+    { tag: [t.meta, t.annotation, t.processingInstruction, t.macroName], class: 'tok-meta' },
+    { tag: t.heading, class: 'tok-heading' },
+    { tag: t.strong, class: 'tok-strong' },
+    { tag: t.emphasis, class: 'tok-emphasis' },
+    { tag: [t.link, t.url], class: 'tok-link' },
+    { tag: t.invalid, class: 'tok-invalid' },
+    { tag: [t.inserted], class: 'tok-inserted' },
+    { tag: [t.deleted], class: 'tok-deleted' },
+    { tag: [t.self, t.special(t.variableName)], class: 'tok-self' },
+  ]),
+);
